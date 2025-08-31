@@ -45,7 +45,9 @@ function loadNextCase() {
         R: stickerColors[1],
         F: stickerColors[2],
       }
-    }
+    },
+    width: 300,
+    height: 300,
   });
   loadVideo(videoId, startTime, endTime);
 }
