@@ -8,19 +8,26 @@
   <body>
     <script>
 cases = [
-  ["nnnnynngr gnnngnnnn nrwnrnnnn", '3B_oB2YrLvk', 212.5, 223.2],
-  ["nnnnynnrw rnnngnnnn nggnrnnnn", '3B_oB2YrLvk', 200.8, 212.2],
-  ["nnnnynngw rnnngnnnn nrgnrnnnn", '3B_oB2YrLvk', 192, 200.5],
-  ["nnnnygnng wrnngnnnn nnrnrnnnn", '3B_oB2YrLvk', 186, 191.5],
+  ["nnnnnonnn nbnnnnbnn nnnnnnnno", '3B_oB2YrLvk', 422.8, 436.4],
+  ["nnnnnbnnn nonnnnonn nnnnnnnnw", '3B_oB2YrLvk', 404.5, 422.8],
+  ["nnnnnnnon nnnnnnonn nbnnnnnnw", '3B_oB2YrLvk', 392.2, 404.3],
+  ["nnnnnnnnr gnnrnnnnn nnwnngnnn", '3B_oB2YrLvk', 363.0, 373],
+  ["nnnnnnnnr gnngnnnnn nnwnnrnnn", '3B_oB2YrLvk', 324.5, 338.6],
+  ["nnnnnnnnw rnngnnnnn nngnnrnnn", '3B_oB2YrLvk', 300.5, 311.4, "Left handed"],
+  ["nnnnnnnnw rnngnnnnn nngnnrnnn", '3B_oB2YrLvk', 272.5, 288.2, "Right handed"],
+  ["nnnnnnngr gnnnnnnnn nrwnnnnnn", '3B_oB2YrLvk', 212.5, 223.2],
+  ["nnnnnnnrw rnnnnnnnn nggnnnnnn", '3B_oB2YrLvk', 200.8, 212.2],
+  ["nnnnnnngw rnnnnnnnn nrgnnnnnn", '3B_oB2YrLvk', 192, 200.5],
+  ["nnnnngnng wrnnnnnnn nnrnnnnnn", '3B_oB2YrLvk', 186, 191.5],
 ];
-// For development
-firstCaseOnly = true;
+// Go into dev mode:
+dev = true;
     </script>
     <script type="module" src="/src/main.js"></script>
     <div class="content">
       <div class="area">
         <div id="counter"></div>
-        <img id="cube">
+        <div id="cube"></div>
         <button id="next">Next</button>
       </div>
       <div class="area">

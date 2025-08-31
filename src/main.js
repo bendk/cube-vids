@@ -1,15 +1,52 @@
 import './style.css'
+import { PNG, Type, Colors } from "sr-puzzlegen"
 
 import {loadVideo} from './youtube.js';
 
 var index = 0;
 
 function loadNextCase() {
-  document.querySelector('#counter').textContent = `Case ${index + 1} of ${cases.length}`;
-  const [cubeCase, videoId, startTime, endTime] = cases[index];
+  const [cubeColors, videoId, startTime, endTime, extra] = cases[index];
+  if(extra) {
+    document.querySelector('#counter').textContent = `Case ${index + 1} of ${cases.length} (${extra})`;
+  } else {
+    document.querySelector('#counter').textContent = `Case ${index + 1} of ${cases.length}`;
+  }
   index = (index + 1) % cases.length;
-  const fc = cubeCase.replace(/ /g, "") + "n".repeat(27);
-  document.querySelector('#cube').src = `https://cube.rider.biz/visualcube.php?fmt=svg&size=200&pzl=3&fc=${fc}`;
+  const stickerColors = cubeColors
+    .split(" ")
+    .map(c => {
+      return Array.from(c).map(color => {
+        switch (color) {
+          case "y":
+            return Colors.YELLOW;
+          case "r":
+            return Colors.RED;
+          case "g":
+            return Colors.GREEN;
+          case "b":
+            return Colors.BLUE;
+          case "w":
+            return Colors.WHITE;
+          case "o":
+            return Colors.ORANGE;
+          default:
+            return Colors.BLACK;
+        }
+      });
+    });
+
+  const cube = document.getElementById("cube");
+  cube.innerHTML = '';
+  PNG(cube, Type.CUBE, {
+    puzzle: {
+      stickerColors: {
+        U: stickerColors[0],
+        R: stickerColors[1],
+        F: stickerColors[2],
+      }
+    }
+  });
   loadVideo(videoId, startTime, endTime);
 }
 
@@ -32,7 +69,7 @@ function shuffle(array) {
   }
 }
 
-if (window["firstCaseOnly"]) {
+if (window["dev"]) {
   cases.splice(1);
 } else {
   shuffle(cases);

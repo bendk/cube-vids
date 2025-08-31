@@ -71,8 +71,12 @@ function checkEndTime() {
   }
 }
 
-document.querySelector('#play').addEventListener("click", () => {
-  player.seekTo(videoInfo.start);
+document.querySelector('#play').addEventListener("click", (e) => {
+  if (window["dev"] && e.ctrlKey) {
+    player.seekTo(videoInfo.end - 1);
+  } else {
+    player.seekTo(videoInfo.start);
+  }
   player.playVideo();
 });
 // document.querySelector('#stop').addEventListener("click", () => {
