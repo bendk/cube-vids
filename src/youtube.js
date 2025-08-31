@@ -1,9 +1,10 @@
+const params = new URLSearchParams(document.location.search);
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var videoInfo = null, apiReady = false, player = null, ready=false, interval = null;
+var videoInfo = null, apiReady = false, player = null, interval = null;
 window["onYouTubeIframeAPIReady"] = function() {
   apiReady = true;
   if(videoInfo) {
@@ -11,21 +12,20 @@ window["onYouTubeIframeAPIReady"] = function() {
   }
 }
 
-export function loadVideo(videoId, start, end) {
-  videoInfo = { videoId, start, end };
+export function loadVideo(videoInfoToLoad) {
+  videoInfo = videoInfoToLoad;
   if(apiReady) {
+    player.stopVideo();
     doLoadVideo();
-  }
-  if (ready) {
     player.seekTo(videoInfo.start, true);
-    player.playVideo();
+    player.pauseVideo();
   }
 }
 
 function doLoadVideo() {
   if (!player) {
-    player = new YT.Player('player', {
-      videoId: videoInfo.videoId,
+    player = new YT.Player('video', {
+      videoId: videoInfo.id,
       playerVars: {
         'playsinline': 0,
         'disablekd': 1,
@@ -38,16 +38,14 @@ function doLoadVideo() {
       }
     });
   } else {
-    player.playVideoById(videoInfo.videoId);
+    player.loadVideoById(videoInfo.videoId);
   }
 }
 
 function onPlayerReady() {
-  ready = true;
   if(videoInfo) {
     player.seekTo(videoInfo.start, true);
-    player.playVideo();
-    //player.pauseVideo();
+    player.pauseVideo();
   }
 }
 
@@ -71,14 +69,18 @@ function checkEndTime() {
   }
 }
 
-document.querySelector('#play').addEventListener("click", (e) => {
-  if (window["dev"] && e.ctrlKey) {
-    player.seekTo(videoInfo.end - 1);
-  } else {
-    player.seekTo(videoInfo.start);
-  }
+const play = document.getElementById('play');
+play.addEventListener("click", () => {
+  player.seekTo(videoInfo.start);
   player.playVideo();
 });
-// document.querySelector('#stop').addEventListener("click", () => {
-//   player.pauseVideo();
-// });
+
+if (params.has("dev")) {
+  const playEnd = document.createElement("button");
+  playEnd.textContent = "Play End";
+  playEnd.addEventListener("click", () => {
+    player.seekTo(videoInfo.end - 1);
+    player.playVideo();
+  });
+  play.parentNode.appendChild(playEnd);
+}

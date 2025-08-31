@@ -3,17 +3,38 @@ import { PNG, Type, Colors } from "sr-puzzlegen"
 
 import {loadVideo} from './youtube.js';
 
+const params = new URLSearchParams(document.location.search);
+
 var index = 0;
 
 function loadNextCase() {
-  const [cubeColors, videoId, startTime, endTime, extra] = cases[index];
-  if(extra) {
-    document.querySelector('#counter').textContent = `Case ${index + 1} of ${cases.length} (${extra})`;
-  } else {
-    document.querySelector('#counter').textContent = `Case ${index + 1} of ${cases.length}`;
+  const currentCase = cases[index];
+  var label = `<b>Case ${index + 1} of ${cases.length}</b>`;
+  if(currentCase.label) {
+    label += `<br>(${currentCase.label})`;
+  }
+  const puzzle = {rotations};
+  if (currentCase.stickers !== undefined) {
+    puzzle.stickerColors = formatStickerColors(currentCase.stickers);
+  } else if (currentCase.algs !== undefined) {
+    const alg = currentCase.algs[Math.floor(Math.random() * currentCase.algs.length)];
+    puzzle.alg = alg;
+    label += `<br>${alg}`;
   }
   index = (index + 1) % cases.length;
-  const stickerColors = cubeColors
+  document.querySelector('#counter').innerHTML = label;
+  const cube = document.getElementById("cube");
+  cube.innerHTML = '';
+  PNG(cube, Type.CUBE, {
+    puzzle,
+    width: 300,
+    height: 300
+  });
+  loadVideo(currentCase.video);
+}
+
+function formatStickerColors(cubeSetup) {
+  const colorArray = cubeSetup
     .split(" ")
     .map(c => {
       return Array.from(c).map(color => {
@@ -35,21 +56,11 @@ function loadNextCase() {
         }
       });
     });
-
-  const cube = document.getElementById("cube");
-  cube.innerHTML = '';
-  PNG(cube, Type.CUBE, {
-    puzzle: {
-      stickerColors: {
-        U: stickerColors[0],
-        R: stickerColors[1],
-        F: stickerColors[2],
-      }
-    },
-    width: 300,
-    height: 300,
-  });
-  loadVideo(videoId, startTime, endTime);
+  return {
+    U: colorArray[0],
+    R: colorArray[1],
+    F: colorArray[2]
+  };
 }
 
 
@@ -71,7 +82,7 @@ function shuffle(array) {
   }
 }
 
-if (window["dev"]) {
+if (params.has("dev")) {
   cases.splice(1);
 } else {
   shuffle(cases);
