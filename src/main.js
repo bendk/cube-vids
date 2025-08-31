@@ -1,24 +1,17 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+import {loadVideo} from './youtube.js';
 
-setupCounter(document.querySelector('#counter'))
+const cases = [
+  ["nnnnygnng wrnngnnnn nnrnrnnnn", '3B_oB2YrLvk', 186, 191.5],
+]
+
+function loadCase() {
+  const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+  const [cubeCase, videoId, startTime, endTime] = selectedCase;
+  const fc = cubeCase.replace(/ /g, "") + "n".repeat(27);
+  document.querySelector('#cube').src = `https://cube.rider.biz/visualcube.php?fmt=svg&size=400&pzl=3&fc=${fc}`;
+  loadVideo(videoId, startTime, endTime);
+}
+
+loadCase();
