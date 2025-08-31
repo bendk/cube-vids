@@ -19,18 +19,24 @@
 
 body {
   margin: 0;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  place-items: center;
-  width: 100vw;
-  height: 100vh;
   background: white;
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
 }
 
 .content {
+  margin: auto;
+  padding: 10px;
   display: flex;
-  gap: 80px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background: white;
+  overflow: auto;
+  width: 100vw;
+  max-width: 600px;
+  gap: 40px;
 }
 
 .area {
@@ -44,11 +50,17 @@ body {
   justify-content: space-between;
 }
 
+iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
+
 button {
   font-size: 20px;
   border: 1px solid black;
   border-radius: 3px;
-  padding: 30px 80px;
+  padding: 20px 80px;
   background: white;
   cursor: pointer;
   &:hover {

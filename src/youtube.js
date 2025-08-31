@@ -25,8 +25,6 @@ export function loadVideo(videoId, start, end) {
 function doLoadVideo() {
   if (!player) {
     player = new YT.Player('player', {
-      height: '400',
-      width: '640',
       videoId: videoInfo.videoId,
       playerVars: {
         'playsinline': 0,
