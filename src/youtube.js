@@ -51,9 +51,9 @@ function onPlayerReady() {
 
 function onPlayerStateChange(event) {
   if (event.data == 1) {
-    // playinG
+    // playing
     if (!interval) {
-      interval = setInterval(checkEndTime, 100);
+      interval = setInterval(checkTime, 100);
     }
   } else {
     if (interval) {
@@ -63,9 +63,17 @@ function onPlayerStateChange(event) {
   }
 }
 
-function checkEndTime() {
-  if(player.getCurrentTime() > videoInfo.end) {
+function checkTime() {
+  const time = player.getCurrentTime();
+  if(time > videoInfo.end) {
     player.pauseVideo();
+  } else if (videoInfo.skip) {
+    for(const [start, end] of videoInfo.skip) {
+      if (time > start && time < end) {
+        player.seekTo(end);
+        return;
+      }
+    }
   }
 }
 
